@@ -1,33 +1,28 @@
-import React from "react";
-import "./Home.css"; // We'll create this later
+import React, { useEffect, useState } from 'react';
+import { fetchPopularMovies } from '../services/api';
+import './Home.css'; // optional for styling
 
 const Home = () => {
+  const [movies, setMovies] = useState([]);
+
+  useEffect(() => {
+    fetchPopularMovies().then(setMovies);
+  }, []);
+
   return (
     <div className="home-container">
-      {/* Hero Section */}
-      <section className="hero-banner">
-        <div className="hero-content">
-          <h1>Welcome to Mova 🎬</h1>
-          <p>Search, Stream, and Save your favorite Movies & TV Shows</p>
-          <button className="cta-button">Start Exploring</button>
-        </div>
-      </section>
-
-      {/* Trending Section */}
-      <section className="section trending">
-        <h2>🔥 Trending Now</h2>
-        <div className="card-row">
-          {/* Movie Cards will go here later */}
-        </div>
-      </section>
-
-      {/* Continue Watching */}
-      <section className="section continue-watching">
-        <h2>⏳ Continue Watching</h2>
-        <div className="card-row">
-          {/* Continue Watching Cards */}
-        </div>
-      </section>
+      <h1>Popular Movies</h1>
+      <div className="movie-grid">
+        {movies.map((movie) => (
+          <div key={movie.id} className="movie-card">
+            <img
+              src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
+              alt={movie.title}
+            />
+            <h3>{movie.title}</h3>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
